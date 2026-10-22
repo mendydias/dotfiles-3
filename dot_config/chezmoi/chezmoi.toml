@@ -1,0 +1,4 @@
+# Managed chezmoi settings. Keep publishing explicit.
+[git]
+    autoCommit = false
+    autoPush = false

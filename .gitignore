@@ -1,0 +1,27 @@
+# Editor and OS leftovers
+.DS_Store
+*~
+*.swp
+*.bak
+
+# Secrets and local env files that must never be committed
+.env
+.env.*
+**/*.pem
+**/*.key
+**/*credential*
+**/*secret*
+**/*token*
+
+# Plugin and runtime payloads that must never land in source
+dot_config/fish/fish_variables
+dot_config/fish/functions/_fzf_*.fish
+dot_config/fish/functions/fzf_*.fish
+dot_config/fish/functions/sdk.fish
+dot_config/fish/functions/__sdkman*
+dot_config/fish/completions/sdk.fish
+dot_config/fish/conf.d/fzf.fish
+dot_config/fish/conf.d/sdk.fish
+dot_sdkman/
+**/.sdkman/
+**/.git/

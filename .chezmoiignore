@@ -1,0 +1,22 @@
+# Repository documentation must not be written into $HOME.
+AGENTS.md
+README.md
+LICENSE
+.gitignore
+.gitattributes
+
+# Never deploy version-control or editor leftovers.
+**/.git
+**/.git/**
+**/.gitignore
+**/*~
+**/*.bak
+**/*.swp
+
+# Fish state and plugin payloads are not source.
+**/fish_variables
+dot_config/fish/fish_variables
+
+# SDKMAN runtimes stay on the machine, not in chezmoi.
+dot_sdkman/**
+**/.sdkman/**

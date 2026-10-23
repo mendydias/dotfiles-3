@@ -20,3 +20,27 @@ dot_config/fish/fish_variables
 # SDKMAN runtimes stay on the machine, not in chezmoi.
 dot_sdkman/**
 **/.sdkman/**
+
+# Runtime state and downloaded payloads; track only reviewed config files.
+dot_config/nvim/lazy/**
+dot_config/nvim/plugin/**
+dot_config/nvim/after/**
+dot_config/herdr/session.json
+dot_config/herdr/session-history.json
+dot_config/herdr/session-snapshots/**
+dot_config/herdr/*.log
+dot_config/herdr/.plugins.lock
+dot_config/herdr/plugins/**
+dot_config/.plans/*.log
+dot_config/.plans/*.tmp
+**/*.aux
+**/*.bbl
+**/*.bcf
+**/*.blg
+**/*.fdb_latexmk
+**/*.fls
+**/*.out
+**/*.synctex.gz
+**/*.toc
+**/*.xdv
+**/__pycache__/**

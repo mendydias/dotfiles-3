@@ -78,4 +78,4 @@ Before applying risky changes or publishing:
 
 ## Commits and pushes
 
-Do not create commits or push to GitHub unless the user explicitly asks. Applying chezmoi is not permission to publish.
+Do not create commits, add `origin`, or push unless the user explicitly asks. This source repository currently has no remote. Applying chezmoi is not permission to publish.

@@ -2,22 +2,23 @@
 
 Chezmoi source for selected files from `~/.config`. The live home directory is not a Git repository.
 
+This machine’s source already lives at `~/.local/share/chezmoi` on `main`. There is no Git remote yet. A private GitHub repository can be attached later; do not add `origin` or push until that is asked for.
+
 ## Requirements
 
 - [chezmoi](https://www.chezmoi.io/)
 - Fish, Fisher, zoxide, Neovim, fzf, fd, and bat
-- GitHub CLI (`gh`) for the private upstream repository
 - SDKMAN, installed separately under `~/.sdkman`
 
-## First-time setup
+## Local workflow
 
 ```fish
-chezmoi init git@github.com:<user>/dotfiles.git
+chezmoi diff
 chezmoi apply
 fisher update
 ```
 
-SDKMAN is not stored here. Install it with the official Bash installer (`rcupdate=false` so it does not edit Bash/Zsh rc files), then use `sdk` from Fish through the Fisher plugin.
+SDKMAN is not stored here. It was installed with the official Bash installer (`rcupdate=false` so it does not edit Bash/Zsh rc files). Use `sdk` from Fish through the Fisher plugin.
 
 Do not install Java or build tools until you choose the versions you want.
 
@@ -39,3 +40,12 @@ Fish configuration, Ghostty, reviewed Hyprland Lua, Micro settings, environment 
 Secrets, browser profiles, password-manager data, Fish `fish_variables`, Fisher plugin payloads, SDKMAN runtimes, generated themes, nested Git checkouts, and machine-specific state.
 
 See `AGENTS.md` for the import, exclusion, and validation rules.
+
+## Later: attach a private remote
+
+After a private GitHub repository exists, add it explicitly. Do not do this as a side effect of editing or applying:
+
+```fish
+git -C ~/.local/share/chezmoi remote add origin git@github.com:<user>/dotfiles.git
+git -C ~/.local/share/chezmoi push -u origin main
+```

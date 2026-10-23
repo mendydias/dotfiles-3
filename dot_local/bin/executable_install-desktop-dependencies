@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Install only explicitly listed repository packages. MEGAsync is intentionally
+# excluded: review its current AUR PKGBUILD and dependencies separately first.
+packages=()
+for package in foot television zed visual-studio-code-bin; do
+  if pacman -Q "$package" >/dev/null 2>&1; then
+    printf 'Already installed: %s\n' "$package"
+    continue
+  fi
+  if ! pacman -Si "$package" >/dev/null 2>&1; then
+    printf 'Not available in configured pacman repositories: %s\n' "$package" >&2
+    if [[ "$package" == visual-studio-code-bin ]]; then
+      printf 'Check the configured Chaotic-AUR repository and package metadata.\n' >&2
+    fi
+    exit 1
+  fi
+  packages+=("$package")
+done
+
+if ((${#packages[@]} == 0)); then
+  printf 'All listed packages are already installed.\n'
+  exit 0
+fi
+
+printf 'Will install from the currently configured pacman repositories:\n'
+printf '  %s\n' "${packages[@]}"
+printf 'This may perform a full system upgrade, as required by pacman.\n'
+read -r -p 'Proceed with sudo pacman -S --needed? [y/N] ' answer
+[[ "$answer" == [yY] || "$answer" == [yY][eE][sS] ]] || {
+  printf 'Cancelled.\n'
+  exit 0
+}
+sudo pacman -S --needed "${packages[@]}"
+
+cat <<'EOF'
+
+MEGAsync was not installed. Review the current AUR PKGBUILD, source URLs,
+checksums, dependencies, and install hooks before deciding whether to build it.
+Do not sign in, select sync folders, start synchronization, or enable autostart
+as part of this script.
+EOF

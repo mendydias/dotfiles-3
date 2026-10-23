@@ -1,0 +1,12 @@
+[Unit]
+Description=Todoist for the Hyprland session
+PartOf=hyprland-session.target
+After=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/flatpak run com.todoist.Todoist
+Restart=no
+
+[Install]
+WantedBy=hyprland-session.target

@@ -46,7 +46,7 @@ local scratchpads = {
 		no_initial_focus = true,
 	},
 	{ key = "O", name = "obsidian", class = "^md\\.obsidian\\.Obsidian$", identity = "md.obsidian.Obsidian", command = "flatpak run md.obsidian.Obsidian" },
-	{ key = "C", name = "chatgpt", class = "^chatgpt$", identity = "chatgpt", command = "chatgpt" },
+	{ key = "C", name = "chatgpt", class = "^chatgpt$", identity = "chatgpt", command = "/home/mendydias/.local/bin/chatgpt" },
 	{ key = "F", name = "ferdium", class = "^ferdium$", identity = "ferdium", command = "ferdium" },
 	{ key = "G", name = "gitkraken", class = "^gitkraken$", identity = "gitkraken", command = "flatpak run com.axosoft.GitKraken" },
 }

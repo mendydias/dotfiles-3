@@ -23,15 +23,15 @@ hl.unbind("SUPER + I")
 hl.unbind("SUPER + mouse_up")
 hl.unbind("SUPER + mouse_down")
 
-hl.bind("SUPER + G", hl.dsp.group.toggle())
-hl.bind("SUPER + U", hl.dsp.group.prev())
-hl.bind("SUPER + I", hl.dsp.group.next())
-hl.bind("SUPER + mouse_up", hl.dsp.group.prev())
-hl.bind("SUPER + mouse_down", hl.dsp.group.next())
+hl.bind("SUPER + G", hl.dsp.group.toggle(), { description = "Group or ungroup the focused window" })
+hl.bind("SUPER + U", hl.dsp.group.prev(), { description = "Focus the previous window in the group" })
+hl.bind("SUPER + I", hl.dsp.group.next(), { description = "Focus the next window in the group" })
+hl.bind("SUPER + mouse_up", hl.dsp.group.prev(), { description = "Focus the previous window in the group" })
+hl.bind("SUPER + mouse_down", hl.dsp.group.next(), { description = "Focus the next window in the group" })
 
 -- BTN_SIDE (275) and BTN_EXTRA (276): browser back/forward on many mice.
-hl.bind("mouse:275", hl.dsp.group.prev())
-hl.bind("mouse:276", hl.dsp.group.next())
+hl.bind("mouse:275", hl.dsp.group.prev(), { description = "Focus the previous window in the group" })
+hl.bind("mouse:276", hl.dsp.group.next(), { description = "Focus the next window in the group" })
 
 -- Named, on-demand scratchpads. Workspace rules launch an app only when its
 -- special workspace is empty; window rules keep that app in its own workspace.
@@ -89,13 +89,13 @@ hl.window_rule({
 })
 
 -- Normal editors remain normal workspace windows; Neovim stays EDITOR/VISUAL.
-hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("code"))
-hl.bind("SUPER + ALT + Z", hl.dsp.exec_cmd("zeditor"))
+hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("code"), { description = "Launch Visual Studio Code" })
+hl.bind("SUPER + ALT + Z", hl.dsp.exec_cmd("zeditor"), { description = "Launch the Zed editor" })
 
 -- Main 1Password launcher and genuine Quick Access; Quick Access positioning
 -- needs observed window identity before adding any narrowly scoped rule.
-hl.bind("SUPER + Slash", hl.dsp.exec_cmd("1password --show"))
-hl.bind("CTRL + SHIFT + SPACE", hl.dsp.exec_cmd("1password --quick-access"))
+hl.bind("SUPER + Slash", hl.dsp.exec_cmd("1password --show"), { description = "Show the 1Password app" })
+hl.bind("CTRL + SHIFT + SPACE", hl.dsp.exec_cmd("1password --quick-access"), { description = "Open 1Password Quick Access" })
 hl.window_rule({
 	name = "onepassword-quick-access-centered",
 	match = { class = "^com\\.onepassword\\.OnePassword$", title = "^Quick Access — 1Password$" },

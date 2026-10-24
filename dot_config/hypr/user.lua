@@ -46,22 +46,37 @@ local scratchpads = {
 		no_initial_focus = true,
 	},
 	{ key = "O", name = "obsidian", class = "^md\\.obsidian\\.Obsidian$", identity = "md.obsidian.Obsidian", command = "flatpak run md.obsidian.Obsidian" },
+	{ key = "SHIFT + Z", name = "zotero", class = "^[Zz]otero$", identity = "zotero", command = "zotero" },
 	{ key = "C", name = "chatgpt", class = "^chatgpt$", identity = "chatgpt", command = "/home/mendydias/.local/bin/chatgpt" },
 	{ key = "F", name = "ferdium", class = "^ferdium$", identity = "ferdium", command = "ferdium" },
 	{ key = "G", name = "gitkraken", class = "^gitkraken$", identity = "gitkraken", command = "flatpak run com.axosoft.GitKraken" },
+	{
+		key = "Q", name = "quota", class = "^quota$", identity = "quota",
+		single_instance = true,
+		-- Run GearLever's AppImage in the foreground so the lock spans its lifetime.
+		command = [[sh -c 'exec flock --nonblock "$XDG_RUNTIME_DIR/quota-scratchpad.lock" env DESKTOPINTEGRATION=1 "$HOME/AppImages/quota.appimage"']],
+	},
 }
 
-for _, app in ipairs(scratchpads) do
+local function scratchpad_toggle(app)
 	local workspace = "special:" .. app.name
-	hl.workspace_rule({ workspace = workspace, on_created_empty = app.command })
-	hl.window_rule({
-		name = "personal-scratchpad-" .. app.name,
-		match = { class = app.class },
-		workspace = workspace,
-		no_initial_focus = app.no_initial_focus,
-	})
-	hl.bind("SUPER + ALT + " .. app.key, function()
-		-- Reuse the session unit so Todoist can be reopened if it was quit.
+	return function()
+		if app.single_instance then
+			-- Include hidden windows: launching the AppImage again creates another instance.
+			for _, window in ipairs(hl.get_windows()) do
+				if window.class:lower() == app.identity then
+					if window.workspace and window.workspace.name ~= workspace then
+						hl.dispatch(hl.dsp.window.move({ window = window, workspace = workspace }))
+					end
+					hl.dispatch(hl.dsp.workspace.toggle_special(app.name))
+					return
+				end
+			end
+			hl.dispatch(hl.dsp.exec_cmd(app.command))
+			hl.dispatch(hl.dsp.workspace.toggle_special(app.name))
+			return
+		end
+		-- Reopen app-managed scratchpads if closed, or activate them if elsewhere.
 		if app.name == "todoist" then
 			hl.dispatch(hl.dsp.exec_cmd(app.command))
 		end
@@ -73,18 +88,59 @@ for _, app in ipairs(scratchpads) do
 		else
 			hl.dispatch(hl.dsp.workspace.toggle_special(app.name))
 		end
-	end)
+	end
 end
 
--- Foot's dedicated app-id avoids capturing ordinary Foot windows.
-hl.workspace_rule({ workspace = "special:quake", on_created_empty = "foot --app-id foot-quake" })
-hl.bind("SUPER + grave", hl.dsp.workspace.toggle_special("quake"))
+local scratchpad_by_name = {}
+for _, app in ipairs(scratchpads) do
+	local workspace = "special:" .. app.name
+	scratchpad_by_name[app.name] = app
+	if not app.single_instance then
+		hl.workspace_rule({ workspace = workspace, on_created_empty = app.command })
+	end
+	hl.window_rule({
+		name = "personal-scratchpad-" .. app.name,
+		match = { class = app.class },
+		workspace = workspace,
+		no_initial_focus = app.no_initial_focus,
+	})
+end
+
+-- Keep each registration literal and single-line so DMS can list it by purpose.
+hl.bind("SUPER + ALT + S", scratchpad_toggle(scratchpad_by_name.spotify), { description = "Toggle Spotify scratchpad" })
+hl.bind("SUPER + ALT + T", scratchpad_toggle(scratchpad_by_name.todoist), { description = "Toggle Todoist scratchpad" })
+hl.bind("SUPER + ALT + O", scratchpad_toggle(scratchpad_by_name.obsidian), { description = "Toggle Obsidian scratchpad" })
+hl.bind("SUPER + ALT + SHIFT + Z", scratchpad_toggle(scratchpad_by_name.zotero), { description = "Toggle Zotero scratchpad" })
+hl.bind("SUPER + ALT + C", scratchpad_toggle(scratchpad_by_name.chatgpt), { description = "Toggle ChatGPT scratchpad" })
+hl.bind("SUPER + ALT + F", scratchpad_toggle(scratchpad_by_name.ferdium), { description = "Toggle Ferdium scratchpad" })
+hl.bind("SUPER + ALT + G", scratchpad_toggle(scratchpad_by_name.gitkraken), { description = "Toggle GitKraken scratchpad" })
+hl.bind("SUPER + ALT + Q", scratchpad_toggle(scratchpad_by_name.quota), { description = "Toggle Quota scratchpad" })
+
+-- A dedicated Ghostty application ID keeps quake as one reusable terminal
+-- without matching or capturing ordinary Ghostty windows.
+local quake_class = "^com\\.mendydias\\.ghostty\\.quake$"
+local function toggle_quake()
+	for _, window in ipairs(hl.get_windows()) do
+		if window.class == "com.mendydias.ghostty.quake" then
+			if window.workspace and window.workspace.name ~= "special:quake" then
+				hl.dispatch(hl.dsp.window.move({ window = window, workspace = "special:quake" }))
+			end
+			hl.dispatch(hl.dsp.workspace.toggle_special("quake"))
+			return
+		end
+	end
+	-- Hold a process-lifetime lock through startup and across config reloads.
+	-- Disable GTK forwarding so the locked process owns the terminal lifetime.
+	hl.dispatch(hl.dsp.exec_cmd([[sh -c 'exec flock --nonblock "$XDG_RUNTIME_DIR/ghostty-quake.lock" ghostty --gtk-single-instance=false --class=com.mendydias.ghostty.quake']]))
+	hl.dispatch(hl.dsp.workspace.toggle_special("quake"))
+end
+hl.bind("SUPER + grave", toggle_quake, { description = "Toggle the drop-down Ghostty terminal" })
 hl.window_rule({
 	name = "personal-scratchpad-quake",
-	match = { class = "^foot-quake$" },
+	match = { class = quake_class },
 	workspace = "special:quake",
 	float = true,
-	size = "100% 50%",
+	size = { "monitor_w", "monitor_h * 0.5" },
 	move = "0 40",
 })
 

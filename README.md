@@ -41,6 +41,31 @@ Secrets, browser profiles, password-manager data, Fish `fish_variables`, Fisher 
 
 See `AGENTS.md` for the import, exclusion, and validation rules.
 
+## Hyprland shortcut descriptions
+
+Keep custom Hyprland shortcuts in `dot_config/hypr/user.lua`; put overrides of
+DMS-owned shortcuts in `dot_config/hypr/dms/binds-user.lua`. Do not edit
+`dms/binds.lua`, which DMS can regenerate.
+
+Give every shortcut a purpose-focused description in the `hl.bind` options,
+for example:
+
+```lua
+hl.bind("SUPER + ALT + S", toggle_spotify, { description = "Toggle Spotify scratchpad" })
+```
+
+Keep each `hl.bind` registration on one line and write its key combination as a
+literal. DMS statically discovers bindings for its keybind display; registrations
+generated inside loops or assembled from key variables may not appear. Callback
+logic can live in helpers, but register each key separately. Describe what the
+shortcut does, not the command or internal dispatcher it runs.
+
+Check the parsed result with:
+
+```sh
+dms keybinds show hyprland
+```
+
 ## Later: attach a private remote
 
 After a private GitHub repository exists, add it explicitly. Do not do this as a side effect of editing or applying:

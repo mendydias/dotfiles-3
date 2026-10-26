@@ -4,6 +4,30 @@
 -- electron-flags.conf. Export here too for apps spawned directly by Hyprland.
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
+-- Prevent Telegram and its media viewer from requesting fullscreen/maximize.
+hl.window_rule({
+	name = "telegram-no-auto-fullscreen",
+	match = { class = "^org\\.telegram\\.desktop$" },
+	suppress_event = "fullscreen maximize",
+})
+
+-- Keep MEGAsync dialogs floating; the status popup belongs below the tray.
+hl.window_rule({
+	name = "megasync-float",
+	match = { class = "^megasync$" },
+	float = true,
+})
+hl.window_rule({
+	name = "megasync-status-below-tray",
+	match = { class = "^megasync$", title = "^MEGAsync$" },
+	move = { "cursor_x - window_w * 0.2", 40 },
+})
+hl.window_rule({
+	name = "megasync-other-dialogs-centered",
+	match = { class = "^megasync$", title = "negative:^MEGAsync$" },
+	center = true,
+})
+
 -- Swap Caps Lock and Escape without changing the console/login keymap.
 hl.config({
 	input = {
@@ -147,6 +171,17 @@ hl.window_rule({
 -- Normal editors remain normal workspace windows; Neovim stays EDITOR/VISUAL.
 hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("code"), { description = "Launch Visual Studio Code" })
 hl.bind("SUPER + ALT + Z", hl.dsp.exec_cmd("zeditor"), { description = "Launch the Zed editor" })
+
+-- Regenerate the searchable Ghostty keybind sheet before opening it in Vimb.
+hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd([[sh -c 'python3 "$HOME/.config/ghostty/keybind_sheet.py" && exec vimb --no-maximize --incognito --cmd "set show-titlebar=false|set status-bar=false" "file://$HOME/.config/ghostty/keybinds.html"']]), { description = "Open the searchable Ghostty keybind guide" })
+hl.window_rule({
+	name = "personal-ghostty-keybind-sheet",
+	-- The document title is set after the window maps, so match Vimb by class.
+	match = { class = "^vimb$" },
+	float = true,
+	size = { "monitor_w * 0.9", "monitor_h * 0.9" },
+	center = true,
+})
 
 -- Main 1Password launcher and genuine Quick Access; Quick Access positioning
 -- needs observed window identity before adding any narrowly scoped rule.

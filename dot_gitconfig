@@ -1,0 +1,16 @@
+[user]
+	name = Umendya Dias
+	email = dev.mendy.das@gmail.com
+
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	line-numbers = true
+
+[merge]
+	conflictStyle = diff3

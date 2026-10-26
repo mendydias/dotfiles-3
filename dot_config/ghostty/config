@@ -109,6 +109,7 @@ keybind = ctrl+b>0=reset_font_size
 keybind = ctrl+b>ctrl+o=text:opencode2\n
 keybind = ctrl+b>ctrl+t=text:herdr\n
 keybind = ctrl+b>ctrl+f=text:tv\n
+keybind = ctrl+b>y=text:y\n
 keybind = ctrl+b>ctrl+s=text:git status\n
 keybind = ctrl+b>ctrl+shift+a=text:git add .\n
 keybind = ctrl+b>ctrl+c=text:git commit -ae\n
@@ -134,6 +135,19 @@ keybind = ctrl+b>ctrl+alt+k=text:git clone\x20
 keybind = ctrl+b>ctrl+shift+s=text:git show\n
 keybind = ctrl+b>ctrl+alt+shift+b=text:git blame\x20
 keybind = ctrl+b>ctrl+g=text:lazygit\n
+
+# Docker command palette: Ctrl+B, then a command key.
+# These intentionally insert a trailing space and never submit the command.
+keybind = ctrl+b>s=text:docker\x20start\x20
+keybind = ctrl+b>t=text:docker\x20stop\x20
+keybind = ctrl+b>r=text:docker\x20restart\x20
+keybind = ctrl+b>p=text:docker\x20pull\x20
+keybind = ctrl+b>b=text:docker\x20build\x20
+keybind = ctrl+b>v=text:docker\x20volume\x20create\x20
+keybind = ctrl+b>i=text:docker\x20image\x20ls\x20
+keybind = ctrl+b>c=text:docker\x20container\x20create\x20
+keybind = ctrl+b>l=text:docker\x20container\x20ls\x20-a\x20
+keybind = ctrl+b>u=text:docker\x20run\x20
 
 # Material 3 UI elements
 unfocused-split-opacity = 0.7

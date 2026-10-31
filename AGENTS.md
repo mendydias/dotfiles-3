@@ -17,7 +17,12 @@ This repository is the chezmoi **source state**. It lives at `~/.local/share/che
 | `dot_config/environment.d/` | `~/.config/environment.d/` | User environment snippets |
 | `dot_config/systemd/user/` | `~/.config/systemd/user/` | Selected user units |
 | `dot_config/autostart/` | `~/.config/autostart/` | Selected autostart entries |
-| `dot_config/DankMaterialShell/settings.json` | `~/.config/DankMaterialShell/settings.json` | Reviewed preferences only |
+| `dot_config/dms/executable_settings.json.tmpl` | `~/.config/dms/settings.json` | Reviewed live preferences; template home paths |
+| `dot_config/symlink_DankMaterialShell` | `~/.config/DankMaterialShell` | Relative symlink to `dms` |
+| `dot_config/private_orca/` | `~/.config/orca/` | Keybind guide generator and tests only |
+| `private_dot_orca/keybindings.json` | `~/.orca/keybindings.json` | Personal shortcut overrides only |
+| `dot_agents/skills/` | `~/.agents/skills/` | Global skills and their reviewed resources |
+| `dot_codex/skills/` | `~/.codex/skills/` | Global Codex skills, not account or runtime state |
 
 Chezmoi maps the `dot_` prefix to a leading `.`. Edit files in this repository, then apply them. Do not treat the live home directory as the source of truth.
 
@@ -58,6 +63,12 @@ Never import or commit:
 
 A private GitHub repository is not a safe place for plaintext secrets.
 
+For an explicitly requested live-system import, review and add individual live
+files instead of applying stale source files over them. Preserve the DMS symlink
+layout. Never recursively add Orca's Electron profile or either agent's home
+directory. Global skill instructions, licenses, scripts, references, and UI assets
+are intentional imports, not permission to import plugin installations or caches.
+
 ## Fish, Fisher, and SDKMAN
 
 - Keep the CachyOS Fish config. Layer custom files on top of it.
@@ -78,4 +89,5 @@ Before applying risky changes or publishing:
 
 ## Commits and pushes
 
-Do not create commits, add `origin`, or push unless the user explicitly asks. This source repository currently has no remote. Applying chezmoi is not permission to publish.
+Do not create commits, add remotes, or push unless the user explicitly asks.
+`origin` is already configured. Applying chezmoi is not permission to publish.

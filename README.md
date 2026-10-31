@@ -1,8 +1,8 @@
 # Dotfiles
 
-Chezmoi source for selected files from `~/.config`. The live home directory is not a Git repository.
+Chezmoi source for selected desktop configuration and global agent skills. The live home directory is not a Git repository.
 
-This machine’s source already lives at `~/.local/share/chezmoi` on `main`. There is no Git remote yet. A private GitHub repository can be attached later; do not add `origin` or push until that is asked for.
+This machine’s source lives at `~/.local/share/chezmoi` on `main`, with `origin` configured. Commit and push only when explicitly requested.
 
 ## Requirements
 
@@ -27,23 +27,34 @@ Do not install Java or build tools until you choose the versions you want.
 | Command | Purpose |
 | --- | --- |
 | `chezmoi edit <file>` | Edit a managed file in the source repo |
+| `chezmoi add <file>` | Import one reviewed live file into the source repo |
 | `chezmoi diff` | Show pending changes |
 | `chezmoi apply` | Write source state to `$HOME` |
 | `fisher update` | Install or update pinned Fisher plugins |
 
 ## What is tracked
 
-Fish configuration, Ghostty, reviewed Hyprland Lua, Micro settings, environment snippets, the Hyprland session target, 1Password autostart, and reviewed DankMaterialShell preferences.
+Fish configuration, Ghostty, reviewed Hyprland Lua, Micro settings, environment snippets, user units, 1Password autostart, Neovim extras and lockfile, Herdr preferences, Git configuration, and reviewed DMS preferences.
+
+DMS preferences live at `~/.config/dms/settings.json`; `~/.config/DankMaterialShell` is a relative symlink to `dms`. Home-directory paths in DMS, Hyprland, and the planning skill are rendered from chezmoi templates.
+
+Orca imports are limited to `~/.orca/keybindings.json` and the keybind guide generator and tests in `~/.config/orca`. Generate the untracked HTML guide with:
+
+```sh
+python3 ~/.config/orca/keybind_sheet.py
+```
+
+Global skills include instructions, licenses, references, scripts, and UI assets under `~/.agents/skills` and `~/.codex/skills/.system`. The shared skills' provenance is recorded in `~/.agents/skills/SOURCES.md`. There was no `~/.skills` directory at import time.
 
 ## What is not tracked
 
-Secrets, browser profiles, password-manager data, Fish `fish_variables`, Fisher plugin payloads, SDKMAN runtimes, generated themes, nested Git checkouts, and machine-specific state.
+Secrets, browser profiles, password-manager data, Fish `fish_variables`, Fisher plugin payloads, SDKMAN runtimes, nested Git checkouts, and machine-specific state. Orca credentials, Electron profiles, databases, sessions, generated HTML, and the Codex system-skill installation marker remain untracked. Reviewed existing DMS-generated Hyprland files and Ghostty colors are intentional snapshots; downloaded DMS plugins and themes are not included.
 
 See `AGENTS.md` for the import, exclusion, and validation rules.
 
 ## Hyprland shortcut descriptions
 
-Keep custom Hyprland shortcuts in `dot_config/hypr/user.lua`; put overrides of
+Keep custom Hyprland shortcuts in `dot_config/hypr/user.lua.tmpl`; put overrides of
 DMS-owned shortcuts in `dot_config/hypr/dms/binds-user.lua`. Do not edit
 `dms/binds.lua`, which DMS can regenerate.
 
@@ -66,11 +77,8 @@ Check the parsed result with:
 dms keybinds show hyprland
 ```
 
-## Later: attach a private remote
+## Importing a live-system snapshot
 
-After a private GitHub repository exists, add it explicitly. Do not do this as a side effect of editing or applying:
+When explicitly requested, treat reviewed live files as the source for that import. Add individual files rather than recursively importing application directories. Review `git diff`, `chezmoi diff`, and `chezmoi apply --dry-run --verbose` before committing coherent groups.
 
-```fish
-git -C ~/.local/share/chezmoi remote add origin git@github.com:<user>/dotfiles.git
-git -C ~/.local/share/chezmoi push -u origin main
-```
+Chezmoi normalizes permissions: the live DMS settings file has mode `0654`, which imports with the executable attribute, and the live `~/.local` directory has mode `0750` rather than chezmoi's `0755`. A full apply would change those modes. Importing a snapshot does not require applying it back to the live system.

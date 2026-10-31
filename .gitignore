@@ -25,3 +25,23 @@ dot_config/fish/conf.d/sdk.fish
 dot_sdkman/
 **/.sdkman/
 **/.git/
+
+# Orca is an Electron profile: allow only the reviewed guide sources.
+/dot_config/private_orca/*
+!/dot_config/private_orca/keybind_sheet.py
+!/dot_config/private_orca/test_keybind_sheet.py
+/private_dot_orca/*
+!/private_dot_orca/keybindings.json
+
+# Only skills belong in these agent directories, never accounts or sessions.
+/dot_agents/*
+!/dot_agents/skills/
+/dot_codex/*
+!/dot_codex/skills/
+**/__pycache__/
+**/*.pyc
+**/*.db
+**/*.db-*
+**/*.sqlite*
+**/*.enc
+**/*codex-system-skills.marker

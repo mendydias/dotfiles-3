@@ -44,3 +44,18 @@ dot_config/.plans/*.tmp
 **/*.toc
 **/*.xdv
 **/__pycache__/**
+
+# Orca profiles contain keys, cookies, databases, and generated guides.
+.config/orca/*
+!.config/orca/keybind_sheet.py
+!.config/orca/test_keybind_sheet.py
+.orca/*
+!.orca/keybindings.json
+
+# Import global skills only, not agent authentication or runtime state.
+.agents/*
+!.agents/skills
+.codex/*
+!.codex/skills
+.codex/skills/.system/.codex-system-skills.marker
+**/*.pyc

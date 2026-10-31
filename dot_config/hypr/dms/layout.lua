@@ -9,6 +9,23 @@ hl.config({
 	},
 	decoration = {
 		rounding = 12,
+		blur = {
+			passes = 2,
+		},
+		glow = {
+			enabled = true,
+			range = 10,
+			render_power = 3,
+		},
+		motion_blur = {
+			enabled = true,
+			samples = 11,
+		},
+	},
+	group = {
+		groupbar = {
+			blur = true,
+		},
 	},
 })
 

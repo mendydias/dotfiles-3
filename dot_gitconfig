@@ -1,6 +1,7 @@
 [user]
 	name = Umendya Dias
 	email = dev.mendy.das@gmail.com
+	signingkey = 31CC89CB3CFC5E47
 
 [core]
 	pager = delta
@@ -14,3 +15,9 @@
 
 [merge]
 	conflictStyle = diff3
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[init]
+	defaujltBranch = main

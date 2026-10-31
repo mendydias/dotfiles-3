@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "keybindings": {},
+  "platforms": {
+    "linux": {
+      "workspace.create": ["Ctrl+Shift+W"],
+      "workspace.rename": ["Ctrl+Alt+W"],
+      "workspace.delete": ["Ctrl+Alt+Shift+W"],
+      "tab.newTerminal": ["Ctrl+Shift+T"],
+      "tab.rename": ["Ctrl+Alt+T"],
+      "tab.close": ["Ctrl+Alt+Shift+T"],
+      "terminal.setTitle": ["Ctrl+Alt+P"],
+      "terminal.closePane": ["Ctrl+Alt+Shift+P"],
+      "tab.newAgent": ["Ctrl+Shift+A"],
+      "tab.newAgent.opencode2": ["Ctrl+Shift+1"],
+      "tab.newAgent.codex": ["Ctrl+Shift+2"],
+      "tab.newAgent.cursor": ["Ctrl+Shift+3"],
+      "tab.newAgent.claude": ["Ctrl+Shift+4"],
+      "worktree.navigateUp": ["Ctrl+Alt+ArrowUp"],
+      "worktree.navigateDown": ["Ctrl+Alt+ArrowDown"],
+      "tab.previousAllTypes": ["Ctrl+Alt+ArrowLeft"],
+      "tab.nextAllTypes": ["Ctrl+Alt+ArrowRight"],
+      "tab.selectByIndex": ["Ctrl+Alt+1"],
+      "workspace.selectByIndex": ["Ctrl+Alt+Shift+1"],
+      "terminal.focusNextPane": ["Ctrl+Alt+Tab"],
+      "terminal.focusPreviousPane": ["Ctrl+Alt+Shift+Tab"],
+      "terminal.splitRight": ["Ctrl+Alt+V"],
+      "terminal.splitDown": ["Ctrl+Alt+H"],
+      "terminal.expandPane": ["Ctrl+Alt+Z"],
+      "terminal.clear": ["Ctrl+Alt+Shift+C"],
+      "worktree.palette": ["Ctrl+Alt+G"],
+      "worktree.quickOpen": ["Ctrl+Alt+F"],
+      "app.settings": ["Ctrl+Alt+S"],
+      "sidebar.left.toggle": ["Ctrl+Alt+B"],
+      "tab.reopenClosed": ["Ctrl+Alt+Shift+R"],
+      "tab.closeAll": ["Ctrl+Alt+Shift+Backspace"],
+      "worktree.history.back": ["Ctrl+Alt+Shift+ArrowLeft"],
+      "worktree.history.forward": ["Ctrl+Alt+Shift+ArrowRight"],
+      "terminal.selectAll": ["Ctrl+Alt+Shift+A"],
+      "editor.addReviewNote": ["Ctrl+Alt+Shift+N"]
+    }
+  }
+}

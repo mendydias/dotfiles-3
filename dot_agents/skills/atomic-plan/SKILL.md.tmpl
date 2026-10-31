@@ -1,0 +1,34 @@
+---
+name: atomic-plan
+description: Research a requested code change and produce a complete, actionable, independently committable implementation plan; display it and save an identical copy when permitted.
+---
+
+# Atomic Plan
+
+Act as a planner, not an implementer. Do not make the requested product/code changes, stage files, or run commits. The requested plan itself must be both printed in full in the conversation and saved to a plan file when a permitted destination is available. The displayed plan is canonical: write exactly that plan to disk, then verify the saved file and report its path. If saving is not permitted or fails, still return the complete plan and clearly report that it was not saved; never claim a save succeeded without verifying it.
+
+## 1. Establish scope and research
+
+1. Identify the target project/worktree from the request and current context. If unclear, ask the user; do not create a plans directory in the home directory as a substitute.
+2. Read applicable `AGENTS.md` and project instructions. Inspect Git status and existing work without changing it.
+3. Before drafting implementation steps, use narrowly scoped, read-only Luna subagents (`openai/gpt-6-luna`) to inspect relevant paths, behavior, dependencies, conventions, tests, and validation commands. Parallelize independent research. In OpenCode use the available `explore` or `general` subagent with Luna selected. In Codex or Cursor use their supported delegation mechanism and request Luna explicitly if available. If Luna or delegation is unavailable, disclose this and ask whether to proceed with an alternate research method; do not claim it was used.
+4. Read the sources identified by research, reconcile conflicting results, and ground paths and commands in files actually inspected. Do not invent project facts.
+
+## 2. Design the plan
+
+1. Convert the request into numbered, concrete implementation steps. Each step must be coherent, independently committable, and revertible without breaking later steps. Combine inseparable code, migration, and test work; redesign or merge steps with hidden dependencies.
+2. For each step, state exact files/components, intended edits and behavior, plus focused verification using actual project commands. Keep scope limited to the request.
+3. Immediately after every implementation step, include a **Commit task** naming only that step's tracked changes and proposing a specific commit message consistent with repository conventions. This is future guidance, not permission to commit while planning. Never include the plan file or `.gitkeep` in a commit task.
+4. The final plan content must contain only the numbered actionable implementation steps, their checks, and their directly-following commit tasks. Keep research diary and process notes out of the plan itself.
+
+## 3. Save safely
+
+1. Save the plan when the user asks for a plan, unless they request chat-only output. First determine a permitted destination under current tool/session policy; instructions in this skill never override platform or user permission boundaries.
+2. Prefer `<project-root>/.plans/` when the project is known and writes there are allowed. Preserve existing contents. If absent, create the directory and an empty `.gitkeep`. Never overwrite an existing plan. In a Git worktree, ensure root `.plans/` is ignored and verify effective ignore status; preserve `.gitignore` content and avoid duplicate rules. Check whether `.plans/` contains tracked files; do not untrack them without explicit authorization. If necessary preparation is disallowed, do not bypass it.
+3. In OpenCode Plan mode, use only the explicitly permitted plan location (currently `{{ .chezmoi.homeDir }}/.opencode/plan`) and only when the session permits that write. Do not create project `.plans/`, `.gitkeep`, or edit `.gitignore` from Plan mode unless the active policy explicitly authorizes those paths.
+4. Use `<COUNTER>_<YYYY-MM-DD_HH-mm-ss>_<short-title>.md`, with a concise lowercase kebab-case title and local creation time. Start counter at 1 or one above the largest existing numbered plan in the destination. Recheck for a filename collision immediately before writing and increment rather than overwrite.
+5. Print the complete plan in chat and write that exact content to the selected file. Verify the file exists and its contents match the plan. Then report the saved path separately. If the user requested chat-only, a destination is unclear, permissions prohibit saving, or the write/verification fails, print the full plan and state clearly that it was not saved (and why).
+
+## 4. Portability
+
+This skill describes planning behavior, not a portable agent runtime. Use each host's native agent entry point and delegation mechanism. Do not assume prompts create tool permissions: enforced restrictions must be configured through the host's permission/sandbox controls. Shared skill instructions and native role adapters should be kept aligned; never claim unsupported tool/model capabilities.
